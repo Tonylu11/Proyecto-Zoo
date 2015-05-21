@@ -7,7 +7,6 @@ package Zoo;
  * @author Antonio Luque Bravo
  *
  */
-public interface Energizable {
-	void comer();
-
+public enum EspeciesAves {
+	AVESTRUZ, AGUILA, GOLONDRINA;
 }

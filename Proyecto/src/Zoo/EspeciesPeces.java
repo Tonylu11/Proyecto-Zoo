@@ -7,7 +7,7 @@ package Zoo;
  * @author Antonio Luque Bravo
  *
  */
-public interface Energizable {
-	void comer();
+public enum EspeciesPeces {
+	TIBURON, SALMON, CARPA, PEZ_GATO;
 
 }

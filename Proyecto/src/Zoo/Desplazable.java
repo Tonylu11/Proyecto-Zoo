@@ -6,6 +6,6 @@ package Zoo;
  *
  */
 public interface Desplazable {
-	int desplazarse();
+	void desplazarse();
 
 }
