@@ -9,12 +9,12 @@ import java.util.regex.Pattern;
  *
  */
 public class Animal {
-	private Alimentacion tipoAlimentacion;
-	private String codigo;
-	private int energia;
-	private double peso;
-	private Calendar fecha;
-	static final private Pattern codigoAnimal = Pattern.compile("");
+	protected Alimentacion tipoAlimentacion;
+	protected String codigo;
+	protected int energia;
+	protected double peso;
+	protected Calendar fecha;
+	static final private Pattern aliasAnimal = Pattern.compile("");
 
 	public Animal(Alimentacion tipoAlimentacion, String codigo, int energia,
 			double peso, Calendar fecha) throws CodigoNoValidoException {
@@ -44,7 +44,7 @@ public class Animal {
 	}
 
 	private boolean esValido(String codigo2) {
-		return codigoAnimal.matcher(codigo).matches();
+		return aliasAnimal.matcher(codigo).matches();
 	}
 
 	public int getEnergia() {

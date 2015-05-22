@@ -7,7 +7,7 @@ import java.util.Calendar;
  * @author Antonio Luque Bravo
  *
  */
-public class Ave extends Animal implements Desplazable {
+public class Ave extends Animal implements Desplazable, Energizable {
 	private EspeciesAves especiesAves;
 	private boolean migrando;
 
@@ -29,7 +29,6 @@ public class Ave extends Animal implements Desplazable {
 			volar();
 			break;
 		}
-
 	}
 
 	private void correr() {
@@ -37,7 +36,6 @@ public class Ave extends Animal implements Desplazable {
 	}
 
 	private void volar() {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -55,6 +53,11 @@ public class Ave extends Animal implements Desplazable {
 
 	public void setMigrando(boolean migrando) {
 		this.migrando = migrando;
+	}
+
+	@Override
+	public void comer() {
+
 	}
 
 }

@@ -2,7 +2,7 @@ package Zoo;
 
 import java.util.Calendar;
 
-public class Mamifero extends Animal {
+public class Mamifero extends Animal implements Desplazable, Energizable {
 	private EspeciesMamiferos especiesMamiferos;
 	private boolean hibernando;
 
@@ -27,5 +27,17 @@ public class Mamifero extends Animal {
 
 	public void setHibernando(boolean hibernando) {
 		this.hibernando = hibernando;
+	}
+
+	@Override
+	public void comer() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void desplazarse() {
+		// TODO Auto-generated method stub
+		
 	}
 }
