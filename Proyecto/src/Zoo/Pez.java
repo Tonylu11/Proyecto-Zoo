@@ -7,7 +7,8 @@ public class Pez extends Animal implements Desplazable, Energizable {
 	private boolean escamas;
 
 	public Pez(Alimentacion tipoAlimentacion, String codigo, int energia,
-			double peso, Calendar fecha) throws CodigoNoValidoException {
+			double peso, Calendar fecha, EspeciesPeces especiesPeces,
+			boolean escamas) throws CodigoNoValidoException {
 		super(tipoAlimentacion, codigo, energia, peso, fecha);
 		setEspeciesPeces(especiesPeces);
 		setEscamas(escamas);
@@ -65,6 +66,14 @@ public class Pez extends Animal implements Desplazable, Energizable {
 	public void comer() {
 		// Energias y pesos
 
+	}
+
+	public static Pez instanciarPez(Alimentacion tipoAlimentacion,
+			String codigo, int energia, double peso, Calendar fecha,
+			EspeciesPeces especiesPeces, boolean escamas)
+			throws CodigoNoValidoException {
+		return new Pez(tipoAlimentacion, codigo, energia, peso, fecha,
+				especiesPeces, escamas);
 	}
 
 }

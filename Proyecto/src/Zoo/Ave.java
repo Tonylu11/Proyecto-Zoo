@@ -12,11 +12,20 @@ public class Ave extends Animal implements Desplazable, Energizable {
 	private boolean migrando;
 
 	public Ave(Alimentacion tipoAlimentacion, String codigo, int energia,
-			double peso, Calendar fecha) throws CodigoNoValidoException {
+			double peso, Calendar fecha, EspeciesAves especiesAves,
+			boolean migrando) throws CodigoNoValidoException {
 		super(tipoAlimentacion, codigo, energia, peso, fecha);
 		setEspeciesAves(especiesAves);
 		setMigrando(migrando);
 
+	}
+
+	public static Ave instanciarAve(Alimentacion tipoAlimentacion,
+			String codigo, int energia, double peso, Calendar fecha,
+			EspeciesAves especiesAves, boolean migrando)
+			throws CodigoNoValidoException {
+		return new Ave(tipoAlimentacion, codigo, energia, peso, fecha,
+				especiesAves, migrando);
 	}
 
 	@Override

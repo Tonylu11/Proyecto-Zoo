@@ -7,10 +7,20 @@ public class Mamifero extends Animal implements Desplazable, Energizable {
 	private boolean hibernando;
 
 	public Mamifero(Alimentacion tipoAlimentacion, String codigo, int energia,
-			double peso, Calendar fecha) throws CodigoNoValidoException {
+			double peso, Calendar fecha, EspeciesMamiferos especiesMamiferos,
+			boolean hibernando) throws CodigoNoValidoException {
 		super(tipoAlimentacion, codigo, energia, peso, fecha);
 		setEspeciesMamiferos(especiesMamiferos);
 		setHibernando(hibernando);
+	}
+
+	protected static Mamifero instanciarMamifero(Alimentacion tipoAlimentacion,
+			String codigo, int energia, double peso, Calendar fecha,
+			EspeciesMamiferos especiesMamiferos, boolean hibernando)
+			throws CodigoNoValidoException {
+		return new Mamifero(tipoAlimentacion, codigo, energia, peso, fecha,
+				especiesMamiferos, hibernando);
+
 	}
 
 	public EspeciesMamiferos getEspeciesMamiferos() {
@@ -32,12 +42,12 @@ public class Mamifero extends Animal implements Desplazable, Energizable {
 	@Override
 	public void comer() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void desplazarse() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

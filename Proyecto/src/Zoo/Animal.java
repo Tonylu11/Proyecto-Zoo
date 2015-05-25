@@ -9,12 +9,13 @@ import java.util.regex.Pattern;
  *
  */
 public class Animal {
-	protected Alimentacion tipoAlimentacion;
-	protected String codigo;
-	protected int energia;
-	protected double peso;
+	protected static Alimentacion tipoAlimentacion;
+	protected static String codigo;
+	protected static int energia;
+	protected static double peso;
 	protected Calendar fecha;
-	static final private Pattern aliasAnimal = Pattern.compile("");
+	static final private Pattern aliasAnimal = Pattern
+			.compile("^[A-Za-z¡…Õ”⁄Ò]{5}-?[0-9]");
 
 	public Animal(Alimentacion tipoAlimentacion, String codigo, int energia,
 			double peso, Calendar fecha) throws CodigoNoValidoException {
