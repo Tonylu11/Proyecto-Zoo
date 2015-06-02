@@ -1,40 +1,51 @@
 package Zoo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class Zoologico {
-	private ArrayList<Mamifero> mamiferos = new ArrayList<Mamifero>();
-	private ArrayList<Ave> almacenAves = new ArrayList<Ave>();
-	private ArrayList<Pez> almacenPeces = new ArrayList<Pez>();
+public class Zoologico implements Serializable {
+	private ArrayList<Animal> zoologico = new ArrayList<Animal>();
+	public boolean modificado;
+	Animal animal;
 
-	public boolean annadirMamifero(Alimentacion tipoAlimentacion,
-			String codigo, int energia, double peso, Calendar fecha,
-			EspeciesMamiferos especiesMamiferos, boolean hibernando)
-			throws CodigoNoValidoException {
-		Mamifero mamifero = Mamifero.instanciarMamifero(tipoAlimentacion,
-				codigo, energia, peso, fecha, especiesMamiferos, hibernando);
-		return mamiferos.add(mamifero);
+	public boolean annadir(Animal animal, String codigo) {
+		// throws AnimalYaExisteException {
+		// if (yaExiste(codigo))
+		// throw new AnimalYaExisteException("");
+		setModificado(true);
+		return zoologico.add(animal);
+	}
+
+	public boolean isModificado() {
+		return modificado;
+	}
+
+	public void setModificado(boolean modificado) {
+		this.modificado = modificado;
+	}
+
+	// public boolean yaExiste(String codigo) {
+	// for (Animal animalAux : zoologico) {
+	// if (animal.getCodigo().equals(codigo)) {
+	// animal = animalAux;
+	// }
+	// }
+	// if (zoologico.contains(animal))
+	// return true;
+	//
+	// return false;
+	// }
+
+	public int size() {
+		return zoologico.size();
+	}
+
+	public Animal get(int index) {
+		if (zoologico.isEmpty() | index < 0 | index > zoologico.size() - 1)
+			return null;
+		return zoologico.get(index);
 
 	}
 
-	public boolean annadirAve(Alimentacion tipoAlimentacion, String codigo,
-			int energia, double peso, Calendar fecha,
-			EspeciesAves especiesAves, boolean migrando)
-			throws CodigoNoValidoException {
-		Ave ave = Ave.instanciarAve(tipoAlimentacion, codigo, energia, peso,
-				fecha, especiesAves, migrando);
-		return almacenAves.add(ave);
-
-	}
-
-	public boolean annadirPez(Alimentacion tipoAlimentacion, String codigo,
-			int energia, double peso, Calendar fecha,
-			EspeciesPeces especiesPeces, boolean escamas)
-			throws CodigoNoValidoException {
-		Pez pez = Pez.instanciarPez(tipoAlimentacion, codigo, energia, peso,
-				fecha, especiesPeces, escamas);
-		return almacenPeces.add(pez);
-
-	}
 }

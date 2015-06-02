@@ -8,6 +8,6 @@ package Zoo;
  *
  */
 public enum Alimentacion {
-	CARNIVORO, HERBIVORO;
+	CARNIVORO, HERBIVORO, OMNIVORO;
 
 }

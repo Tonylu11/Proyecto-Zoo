@@ -1,29 +1,40 @@
 package Zoo;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.regex.Pattern;
+
+import GUI.AnimalSinPesoException;
 
 /**
  * 
  * @author Antonio Luque Bravo
  *
  */
-public class Animal {
-	protected static Alimentacion tipoAlimentacion;
-	protected static String codigo;
-	protected static int energia;
-	protected static double peso;
+public class Animal implements Serializable {
+	protected Alimentacion tipoAlimentacion;
+	protected String codigo;
+	protected int energia;
+	protected double peso;
 	protected Calendar fecha;
 	static final private Pattern aliasAnimal = Pattern
-			.compile("^[A-Za-z¡…Õ”⁄Ò]{5}-?[0-9]");
+			.compile("^[MAM|AVE|PEZ]-[A-Za-z¡…Õ”⁄Ò]{5}-[0-9]{2}$");
+	static final private Pattern pesoAnimal = Pattern
+			.compile("^[0-9][0-9]?[0-9]?$");
+	static final private Pattern energiaAnimal = Pattern
+			.compile("^[0-9][0-9][0-9][0-9]?$");
 
 	public Animal(Alimentacion tipoAlimentacion, String codigo, int energia,
-			double peso, Calendar fecha) throws CodigoNoValidoException {
+			double peso, Calendar fecha) throws CodigoNoValidoException,
+			AnimalSinPesoException, AnimalSinEnergiaException {
 		setTipoAlimentacion(tipoAlimentacion);
 		setCodigo(codigo);
-		setEnergia(energia);
-		setPeso(peso);
+		this.energia = energia;
+		this.peso = peso;
 		setFecha(fecha);
+	}
+
+	public Animal() {
 	}
 
 	public Alimentacion getTipoAlimentacion() {
@@ -39,12 +50,12 @@ public class Animal {
 	}
 
 	public void setCodigo(String codigo) throws CodigoNoValidoException {
-		if (!esValido(codigo))
+		if (!esValidoAliasAnimal(codigo))
 			throw new CodigoNoValidoException("El cÛdigo no es v·lido");
 		this.codigo = codigo;// Pidiendolo al usuario
 	}
 
-	private boolean esValido(String codigo2) {
+	private boolean esValidoAliasAnimal(String codigo) {
 		return aliasAnimal.matcher(codigo).matches();
 	}
 
@@ -52,16 +63,30 @@ public class Animal {
 		return energia;
 	}
 
-	public void setEnergia(int energia) {
-		this.energia = energia;
+	public static boolean energiaEsValida(String codigo) {
+		return energiaAnimal.matcher(codigo).matches();
+	}
+
+	public void setEnergia(int energia) throws AnimalSinEnergiaException {
+		if (!energiaEsValida(codigo)) {
+			throw new AnimalSinEnergiaException("El cÛdigo no es v·lido");
+		} else {
+			this.energia = energia;
+		}
 	}
 
 	public double getPeso() {
 		return peso;
 	}
 
-	public void setPeso(double peso) {
+	public void setPeso(double peso) throws AnimalSinPesoException {
+		if (!pesoEsValido(codigo))
+			throw new AnimalSinPesoException("El cÛdigo no es v·lido");
 		this.peso = peso;
+	}
+
+	public static boolean pesoEsValido(String codigo2) {
+		return pesoAnimal.matcher(codigo2).matches();
 	}
 
 	public Calendar getFecha() {
@@ -71,4 +96,40 @@ public class Animal {
 	public void setFecha(Calendar fecha) {
 		this.fecha = fecha;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Animal other = (Animal) obj;
+		if (codigo == null) {
+			if (other.codigo != null)
+				return false;
+		} else if (!codigo.equals(other.codigo))
+			return false;
+		return true;
+	}
+
 }
