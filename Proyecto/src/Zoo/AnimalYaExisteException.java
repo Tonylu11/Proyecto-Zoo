@@ -1,5 +1,11 @@
 package Zoo;
 
+/**
+ * Excepci&oacute;n para cuando el animal ya exista en el Zoo.
+ * 
+ * @author Antonio Luque Bravo
+ *
+ */
 public class AnimalYaExisteException extends Exception {
 
 	public AnimalYaExisteException() {

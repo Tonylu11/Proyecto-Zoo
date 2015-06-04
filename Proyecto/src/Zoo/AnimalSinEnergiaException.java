@@ -1,5 +1,11 @@
 package Zoo;
 
+/**
+ * Excepci&oacute;n para cuando un animal se intente crear sin energ&iacute;a.
+ * 
+ * @author Antonio Luque Bravo
+ *
+ */
 public class AnimalSinEnergiaException extends Exception {
 
 	public AnimalSinEnergiaException() {

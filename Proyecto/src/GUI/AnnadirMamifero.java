@@ -18,6 +18,7 @@ import javax.swing.ButtonGroup;
 import Zoo.Alimentacion;
 import Zoo.Animal;
 import Zoo.AnimalSinEnergiaException;
+import Zoo.AnimalSinPesoException;
 import Zoo.AnimalYaExisteException;
 import Zoo.CodigoNoValidoException;
 import Zoo.EspeciesMamiferos;
@@ -30,6 +31,7 @@ import javax.swing.JComboBox;
 
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 
 import javax.swing.JCheckBox;
@@ -37,6 +39,12 @@ import javax.swing.JCheckBox;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
+/**
+ * Ventana que a&ntilde;ade un Mam&iacute;fero al Zool&oacute;gico
+ * 
+ * @author Antonio Luque Bravo
+ *
+ */
 @SuppressWarnings("serial")
 public class AnnadirMamifero extends JDialog {
 
@@ -50,24 +58,13 @@ public class AnnadirMamifero extends JDialog {
 	private JComboBox alimentacionCBox;
 	private GregorianCalendar fecha;
 	private JCheckBox chckbxHibernando;
+	private JTextField fechaTxtField;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			AnnadirMamifero dialog = new AnnadirMamifero();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Create the dialog.
+	 * Crea la ventana.
 	 */
 	public AnnadirMamifero() {
+		setTitle("A\u00F1adir Mamifero");
 		setModal(true);
 		setResizable(false);
 		setBounds(100, 100, 330, 332);
@@ -78,6 +75,11 @@ public class AnnadirMamifero extends JDialog {
 
 		aliasTxtField = new JTextField();
 		aliasTxtField.addFocusListener(new FocusAdapter() {
+			/**
+			 * Cuando pierde el foco el campo del alias, comprueba si es valido,
+			 * de ser asi lo mostrar&aacute; el texto de color negro, de lo
+			 * contrario lo mostrar&aacute; rojo.
+			 */
 			@Override
 			public void focusLost(FocusEvent arg0) {
 				if (!Mamifero.esValido(aliasTxtField.getText())) {
@@ -127,6 +129,11 @@ public class AnnadirMamifero extends JDialog {
 
 		pesoTxtField = new JTextField();
 		pesoTxtField.addFocusListener(new FocusAdapter() {
+			/**
+			 * Cuando pierde el foco el campo de peso, comprueba si es valido,
+			 * de ser asi lo mostrar&aacute; el texto de color negro, de lo
+			 * contrario lo mostrar&aacute; rojo.
+			 */
 			@Override
 			public void focusLost(FocusEvent e) {
 				if (!Animal.pesoEsValido(pesoTxtField.getText())) {
@@ -177,6 +184,18 @@ public class AnnadirMamifero extends JDialog {
 		chckbxHibernando = new JCheckBox("Hibernando");
 		chckbxHibernando.setBounds(32, 140, 97, 23);
 		contentPanel.add(chckbxHibernando);
+		fechaTxtField = new JTextField();
+		fechaTxtField.setEditable(false);
+		fechaTxtField.setBounds(179, 149, 86, 20);
+		contentPanel.add(fechaTxtField);
+		fechaTxtField.setColumns(10);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		String str = sdf.format(General.zoologico.getFecha().getTime());
+		fechaTxtField.setText(str);
+
+		JLabel lblFecha = new JLabel("Fecha");
+		lblFecha.setBounds(179, 128, 46, 14);
+		contentPanel.add(lblFecha);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -205,6 +224,14 @@ public class AnnadirMamifero extends JDialog {
 		}
 	}
 
+	/**
+	 * Da de alta a un Mam&iacute;fero en el Zoo
+	 * 
+	 * @param comprobarEnergia
+	 *            Comprueba si la energ&iacute;a es v&aacute;lida.
+	 * @param comprobarPeso
+	 *            Comprueba si el peso es v&aacute;lido.
+	 */
 	protected void alta(String comprobarEnergia, String comprobarPeso) {
 		try {
 			if (!Animal.energiaEsValida(comprobarEnergia))
@@ -215,19 +242,17 @@ public class AnnadirMamifero extends JDialog {
 					(Alimentacion) alimentacionCBox.getSelectedItem(),
 					aliasTxtField.getText(), Integer.parseInt(energiaTxtField
 							.getText()), Double.parseDouble(pesoTxtField
-							.getText()), fecha.getInstance(),
+							.getText()), General.zoologico.getFecha(), 1,
 					(EspeciesMamiferos) especieCBox.getSelectedItem(),
-					chckbxHibernando.isSelected());
-			if (General.zoologico.annadir(mamifero, aliasTxtField.getText())) {
+					getHibernando());
+			if (General.zoologico.annadir(mamifero)) {
 				JOptionPane.showMessageDialog(okButton,
 						"Mamifero añadido con exito");
 			}
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(contentPanel, "Formato no válido",
 					"Error", JOptionPane.ERROR_MESSAGE);
-		} catch (HeadlessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
 		} catch (CodigoNoValidoException e) {
 			JOptionPane
 					.showMessageDialog(contentPanel, "El código es invalido",
@@ -239,12 +264,19 @@ public class AnnadirMamifero extends JDialog {
 			JOptionPane.showMessageDialog(contentPanel,
 					"La energia es inválida", "Error",
 					JOptionPane.ERROR_MESSAGE);
-			// } catch (AnimalYaExisteException e) {
-			// JOptionPane.showMessageDialog(contentPanel,
-			// "El Mamifero ya existe.", "Error",
-			// JOptionPane.ERROR_MESSAGE);
+		} catch (AnimalYaExisteException e) {
+			JOptionPane.showMessageDialog(contentPanel,
+					"El Mamifero ya existe.", "Error",
+					JOptionPane.ERROR_MESSAGE);
 		}
 
+	}
+
+	public boolean getHibernando() {
+		if (chckbxHibernando.isSelected() == true) {
+			return true;
+		} else
+			return false;
 	}
 
 }

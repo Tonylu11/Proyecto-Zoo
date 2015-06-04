@@ -1,27 +1,33 @@
-package GUI;
+package Zoo;
 
-public class AnimalSinPesoException extends Exception {
+/**
+ * Cuando el peso no es correcto.
+ * 
+ * @author Antonio Luque Bravo
+ *
+ */
+public class PesoInvalidoException extends Exception {
 
-	public AnimalSinPesoException() {
+	public PesoInvalidoException() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public AnimalSinPesoException(String message) {
+	public PesoInvalidoException(String message) {
 		super(message);
 		// TODO Auto-generated constructor stub
 	}
 
-	public AnimalSinPesoException(Throwable cause) {
+	public PesoInvalidoException(Throwable cause) {
 		super(cause);
 		// TODO Auto-generated constructor stub
 	}
 
-	public AnimalSinPesoException(String message, Throwable cause) {
+	public PesoInvalidoException(String message, Throwable cause) {
 		super(message, cause);
 		// TODO Auto-generated constructor stub
 	}
 
-	public AnimalSinPesoException(String message, Throwable cause,
+	public PesoInvalidoException(String message, Throwable cause,
 			boolean enableSuppression, boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
 		// TODO Auto-generated constructor stub

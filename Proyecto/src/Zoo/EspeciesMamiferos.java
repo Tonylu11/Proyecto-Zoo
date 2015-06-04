@@ -4,7 +4,9 @@
 package Zoo;
 
 /**
- * @author MigueAntonio
+ * Especies de Mam&iacute;feros.
+ * 
+ * @author Antonio Luque Bravo
  *
  */
 public enum EspeciesMamiferos {

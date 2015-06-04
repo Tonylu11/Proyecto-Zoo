@@ -1,5 +1,11 @@
 package Zoo;
 
+/**
+ * Excepci&oacute;n para cuando el alias no es correcto.
+ * 
+ * @author Antonio Luque Bravo
+ *
+ */
 public class CodigoNoValidoException extends Exception {
 
 	public CodigoNoValidoException() {

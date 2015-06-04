@@ -19,6 +19,7 @@ import javax.swing.JComboBox;
 import Zoo.Alimentacion;
 import Zoo.Animal;
 import Zoo.AnimalSinEnergiaException;
+import Zoo.AnimalSinPesoException;
 import Zoo.AnimalYaExisteException;
 import Zoo.Ave;
 import Zoo.CodigoNoValidoException;
@@ -28,10 +29,17 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 
+/**
+ * Ventana que a&ntilde;ade un Ave al Zool&oacute;gico
+ * 
+ * @author Antonio Luque Bravo
+ *
+ */
 public class AnnadirAve extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
@@ -40,27 +48,16 @@ public class AnnadirAve extends JDialog {
 	private JTextField energiaTxtField;
 	private JComboBox alimentacionCBox;
 	private JComboBox especieCBox;
-	private GregorianCalendar fecha;
+	private Animal fecha;
 	private JCheckBox chckbxMigrando;
 	private JButton okButton;
+	private JTextField fechaTxtField;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			AnnadirAve dialog = new AnnadirAve();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Create the dialog.
+	 * Crea la ventana.
 	 */
 	public AnnadirAve() {
+		setTitle("A\u00F1adir Ave");
 		setModal(true);
 		setResizable(false);
 		setBounds(100, 100, 330, 332);
@@ -70,6 +67,26 @@ public class AnnadirAve extends JDialog {
 		contentPanel.setLayout(null);
 
 		aliasTxtField = new JTextField();
+		aliasTxtField.addFocusListener(new FocusAdapter() {
+			/**
+			 * Cuando pierde el foco el campo del alias, comprueba si es valido,
+			 * de ser asi lo mostrar&aacute; el texto de color negro, de lo
+			 * contrario lo mostrar&aacute; rojo.
+			 */
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				if (!Ave.esValido(aliasTxtField.getText())) {
+					aliasTxtField.setForeground(Color.RED);
+				} else {
+					aliasTxtField.setForeground(Color.BLACK);
+				}
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				aliasTxtField.setForeground(Color.BLACK);
+			}
+		});
 		aliasTxtField.setColumns(10);
 		aliasTxtField.setBounds(91, 31, 106, 20);
 		contentPanel.add(aliasTxtField);
@@ -84,6 +101,11 @@ public class AnnadirAve extends JDialog {
 
 		pesoTxtField = new JTextField();
 		pesoTxtField.addFocusListener(new FocusAdapter() {
+			/**
+			 * Cuando pierde el foco el campo de peso, comprueba si es valido,
+			 * de ser asi lo mostrar&aacute; el texto de color negro, de lo
+			 * contrario lo mostrar&aacute; rojo.
+			 */
 			@Override
 			public void focusLost(FocusEvent e) {
 				if (!Animal.pesoEsValido(pesoTxtField.getText())) {
@@ -94,6 +116,9 @@ public class AnnadirAve extends JDialog {
 				}
 			}
 
+			/**
+			 * Cuando gane el foco se volver&aacute; el texto negro.
+			 */
 			@Override
 			public void focusGained(FocusEvent e) {
 				pesoTxtField.setForeground(Color.BLACK);
@@ -109,11 +134,19 @@ public class AnnadirAve extends JDialog {
 
 		energiaTxtField = new JTextField();
 		energiaTxtField.addFocusListener(new FocusAdapter() {
+			/**
+			 * Cuando gane el foco se volver&aacute; el texto negro.
+			 */
 			@Override
 			public void focusGained(FocusEvent e) {
 				energiaTxtField.setForeground(Color.BLACK);
 			}
 
+			/**
+			 * Cuando pierde el foco el campo de la energia, comprueba si es
+			 * valido, de ser asi lo mostrar&aacute; el texto de color negro, de
+			 * lo contrario lo mostrar&aacute; rojo.
+			 */
 			@Override
 			public void focusLost(FocusEvent e) {
 				if (!Animal.energiaEsValida(energiaTxtField.getText())) {
@@ -147,8 +180,21 @@ public class AnnadirAve extends JDialog {
 		contentPanel.add(alimentacionCBox);
 
 		chckbxMigrando = new JCheckBox("Migrando");
-		chckbxMigrando.setBounds(38, 134, 97, 23);
+		chckbxMigrando.setBounds(42, 144, 97, 23);
 		contentPanel.add(chckbxMigrando);
+
+		fechaTxtField = new JTextField();
+		fechaTxtField.setEditable(false);
+		fechaTxtField.setBounds(189, 145, 86, 20);
+		contentPanel.add(fechaTxtField);
+		fechaTxtField.setColumns(10);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		String str = sdf.format(General.zoologico.getFecha().getTime());
+		fechaTxtField.setText(str);
+
+		JLabel lblFecha = new JLabel("Fecha");
+		lblFecha.setBounds(189, 124, 46, 14);
+		contentPanel.add(lblFecha);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -177,6 +223,14 @@ public class AnnadirAve extends JDialog {
 		}
 	}
 
+	/**
+	 * Da de alta a un ave en el Zoo
+	 * 
+	 * @param comprobarEnergia
+	 *            Comprueba si la energ&iacute;a es v&aacute;lida.
+	 * @param comprobarPeso
+	 *            Comprueba si el peso es v&aacute;lido.
+	 */
 	protected void alta(String comprobarEnergia, String comprobarPeso) {
 		try {
 			if (!Animal.energiaEsValida(comprobarEnergia))
@@ -187,10 +241,10 @@ public class AnnadirAve extends JDialog {
 					(Alimentacion) alimentacionCBox.getSelectedItem(),
 					aliasTxtField.getText(), Integer.parseInt(energiaTxtField
 							.getText()), Double.parseDouble(pesoTxtField
-							.getText()), fecha.getInstance(),
-					(EspeciesAves) especieCBox.getSelectedItem(),
+							.getText()), General.zoologico.getFecha(),
+					(EspeciesAves) especieCBox.getSelectedItem(), 2,
 					chckbxMigrando.isSelected());
-			if (General.zoologico.annadir(ave, aliasTxtField.getText())) {
+			if (General.zoologico.annadir(ave)) {
 				JOptionPane
 						.showMessageDialog(okButton, "Ave añadido con exito");
 			}
@@ -198,7 +252,6 @@ public class AnnadirAve extends JDialog {
 			JOptionPane.showMessageDialog(contentPanel, "Formato no válido",
 					"Error", JOptionPane.ERROR_MESSAGE);
 		} catch (HeadlessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (CodigoNoValidoException e) {
 			JOptionPane
@@ -211,10 +264,9 @@ public class AnnadirAve extends JDialog {
 			JOptionPane.showMessageDialog(contentPanel,
 					"La energia es inválida", "Error",
 					JOptionPane.ERROR_MESSAGE);
-			// } catch (AnimalYaExisteException e) {
-			// JOptionPane.showMessageDialog(contentPanel,
-			// "El Mamifero ya existe.", "Error",
-			// JOptionPane.ERROR_MESSAGE);
+		} catch (AnimalYaExisteException e) {
+			JOptionPane.showMessageDialog(contentPanel, "El Ave ya existe.",
+					"Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 

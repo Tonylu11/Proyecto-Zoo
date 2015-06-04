@@ -4,6 +4,8 @@
 package Zoo;
 
 /**
+ * Tipos de alimentaci&oacute;n de los animales del Zoo.
+ * 
  * @author Antonio Luque Bravo
  *
  */

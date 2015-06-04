@@ -33,22 +33,31 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+/**
+ * Ventana principal de la Interfaz Gr&aacute;fica del Zoo.
+ * 
+ * @author Antonio Luque Bravo
+ *
+ */
 public class PrincipalGUI {
 
 	private JFrame frmZoologicoCordoba;
 	private AnnadirMamifero annadirMamifero = new AnnadirMamifero();
 	private AnnadirAve annadirAve = new AnnadirAve();
 	private AnnadirPez annadirPez = new AnnadirPez();
-	private MostrarZoologico mostrarZoologico = new MostrarZoologico();
+
+	private EliminarAnimal eliminarAnimal = new EliminarAnimal();
+	static AyudaGeneral ayudaGeneral = new AyudaGeneral();
+	static AcercaDe acercaDe = new AcercaDe();
 	private static JFrame nuevo = new JFrame();
 	private File file;
 	private FileNameExtensionFilter filtro = new FileNameExtensionFilter(
-			"Archivos .obj", "obj");
+			"Archivos .zoo", "zoo");
 	private File selectedFile;
 	private JMenuItem mntmNumeroDeAnimales;
 
 	/**
-	 * Launch the application.
+	 * Lanza la aplicaci&oacute;n.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -64,14 +73,14 @@ public class PrincipalGUI {
 	}
 
 	/**
-	 * Create the application.
+	 * Genera la Ventana
 	 */
 	public PrincipalGUI() {
 		initialize();
 	}
 
 	/**
-	 * Initialize the contents of the frame.
+	 * Inicializa el contenido de la ventana.
 	 */
 	private void initialize() {
 		frmZoologicoCordoba = new JFrame();
@@ -81,6 +90,9 @@ public class PrincipalGUI {
 		frmZoologicoCordoba
 				.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frmZoologicoCordoba.addWindowListener(new WindowAdapter() {
+			/**
+			 * Lo que har&aacute; la ventana mientras que se cierra.
+			 */
 			@Override
 			public void windowClosing(WindowEvent arg0) {
 				salir();
@@ -96,6 +108,9 @@ public class PrincipalGUI {
 
 		JMenuItem mntmNuevo = new JMenuItem("Nuevo");
 		mntmNuevo.addActionListener(new ActionListener() {
+			/**
+			 * Nuevo Zoo.
+			 */
 			public void actionPerformed(ActionEvent e) {
 				nuevo();
 			}
@@ -106,6 +121,9 @@ public class PrincipalGUI {
 
 		JMenuItem mntmAbrir = new JMenuItem("Abrir");
 		mntmAbrir.addActionListener(new ActionListener() {
+			/**
+			 * Abre un archivo donde est&aacute; almacenado un Zoo.
+			 */
 			public void actionPerformed(ActionEvent e) {
 				abrir();
 			}
@@ -116,6 +134,9 @@ public class PrincipalGUI {
 
 		JMenuItem mntmGuardar = new JMenuItem("Guardar");
 		mntmGuardar.addActionListener(new ActionListener() {
+			/**
+			 * Guarda el Zoo.
+			 */
 			public void actionPerformed(ActionEvent e) {
 				guardar();
 			}
@@ -134,11 +155,14 @@ public class PrincipalGUI {
 				InputEvent.ALT_MASK));
 		mnArchivo.add(mntmGuardarComo);
 
-		JSeparator separator = new JSeparator();
-		mnArchivo.add(separator);
+		JSeparator separador = new JSeparator();
+		mnArchivo.add(separador);
 
 		JMenuItem mntmSalir = new JMenuItem("Salir");
 		mntmSalir.addActionListener(new ActionListener() {
+			/**
+			 * Sale del programa.
+			 */
 			public void actionPerformed(ActionEvent e) {
 				salir();
 			}
@@ -147,110 +171,175 @@ public class PrincipalGUI {
 				InputEvent.CTRL_MASK));
 		mnArchivo.add(mntmSalir);
 
-		JMenu mnEdicin = new JMenu("Edici\u00F3n");
-		mnEdicin.setMnemonic('E');
-		menuBar.add(mnEdicin);
+		JMenu mnEdicion = new JMenu("Edici\u00F3n");
+		mnEdicion.setMnemonic('E');
+		menuBar.add(mnEdicion);
 
-		JMenu mnAadirAnimal = new JMenu("A\u00F1adir Animal");
-		mnEdicin.add(mnAadirAnimal);
+		JMenu mnAnnadirAnimal = new JMenu("A\u00F1adir Animal");
+		mnEdicion.add(mnAnnadirAnimal);
 
-		JMenuItem mntmAadir = new JMenuItem("A\u00F1adir Mam\u00EDfero");
-		mntmAadir.addActionListener(new ActionListener() {
+		JMenuItem mntmAnnadir = new JMenuItem("A\u00F1adir Mam\u00EDfero");
+		mntmAnnadir.addActionListener(new ActionListener() {
+			/**
+			 * Pone visible la ventana para a&ntilde;adir un mam&iacute;fero al
+			 * Zoo.
+			 */
 			public void actionPerformed(ActionEvent arg0) {
 				annadirMamifero.setVisible(true);
 			}
 		});
-		mnAadirAnimal.add(mntmAadir);
-		mntmAadir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M,
+		mnAnnadirAnimal.add(mntmAnnadir);
+		mntmAnnadir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M,
 				InputEvent.CTRL_MASK));
 
-		JMenuItem mntmAadirAve = new JMenuItem("A\u00F1adir Ave");
-		mntmAadirAve.addActionListener(new ActionListener() {
+		JMenuItem mntmAnnadirAve = new JMenuItem("A\u00F1adir Ave");
+		mntmAnnadirAve.addActionListener(new ActionListener() {
+			/**
+			 * Pone visible la ventana para a&ntilde;adir un ave al Zoo.
+			 */
 			public void actionPerformed(ActionEvent arg0) {
 				annadirAve.setVisible(true);
 			}
 		});
-		mnAadirAnimal.add(mntmAadirAve);
-		mntmAadirAve.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,
+		mnAnnadirAnimal.add(mntmAnnadirAve);
+		mntmAnnadirAve.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,
 				InputEvent.CTRL_MASK));
 
-		JMenuItem mntmAadirPez = new JMenuItem("A\u00F1adir Pez");
-		mntmAadirPez.addActionListener(new ActionListener() {
+		JMenuItem mntmAnnadirPez = new JMenuItem("A\u00F1adir Pez");
+		mntmAnnadirPez.addActionListener(new ActionListener() {
+			/**
+			 * Pone visible la ventana para a&ntilde;adir un pez al Zoo.
+			 */
 			public void actionPerformed(ActionEvent e) {
 				annadirPez.setVisible(true);
 			}
 		});
-		mnAadirAnimal.add(mntmAadirPez);
-		mntmAadirPez.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,
+		mnAnnadirAnimal.add(mntmAnnadirPez);
+		mntmAnnadirPez.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,
 				InputEvent.CTRL_MASK));
 
-		JMenu mnEliminarAnimal = new JMenu("Eliminar Animal");
-		mnEdicin.add(mnEliminarAnimal);
+		JMenuItem mntmEliminarAnimal = new JMenuItem("Eliminar Animal");
+		mntmEliminarAnimal.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D,
+				InputEvent.CTRL_MASK));
+		mntmEliminarAnimal.addActionListener(new ActionListener() {
+			/**
+			 * Pone visible la ventana para eliminar a un animal del Zoo.
+			 */
+			public void actionPerformed(ActionEvent arg0) {
+				eliminarAnimal.setVisible(true);
+			}
+		});
+		mnEdicion.add(mntmEliminarAnimal);
 
-		JMenuItem mntmEliminarMamifero = new JMenuItem("Eliminar Mam\u00EDfero");
-		mntmEliminarMamifero.setAccelerator(KeyStroke.getKeyStroke(
-				KeyEvent.VK_M, InputEvent.SHIFT_MASK));
-		mnEliminarAnimal.add(mntmEliminarMamifero);
+		JMenu mnNewMenu = new JMenu("Interacci\u00F3n");
+		mnNewMenu.setMnemonic('I');
+		menuBar.add(mnNewMenu);
 
-		JMenuItem mntmEliminarAve = new JMenuItem("Eliminar Ave");
-		mntmEliminarAve.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,
+		JMenuItem mntmDarDeComer = new JMenuItem("Alimentar Animales");
+		mntmDarDeComer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C,
 				InputEvent.SHIFT_MASK));
-		mnEliminarAnimal.add(mntmEliminarAve);
+		mntmDarDeComer.addActionListener(new ActionListener() {
+			/**
+			 * Pone visible la ventana para alimentar animales.
+			 */
+			public void actionPerformed(ActionEvent e) {
+				if (General.zoologico.size() == 0) {
+					JOptionPane.showMessageDialog(frmZoologicoCordoba,
+							"El Zoológico está vacío.");
+				} else {
+					AlimentarAnimal alimentarAnimales = new AlimentarAnimal();
+					alimentarAnimales.setVisible(true);
+				}
+			}
+		});
+		mnNewMenu.add(mntmDarDeComer);
 
-		JMenuItem mntmEliminarPez = new JMenuItem("Eliminar Pez");
-		mntmEliminarPez.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,
-				InputEvent.SHIFT_MASK));
-		mnEliminarAnimal.add(mntmEliminarPez);
+		JMenuItem mnDesplazarAnimales = new JMenuItem("Desplazar Animales");
+		mnDesplazarAnimales.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_D, InputEvent.SHIFT_MASK));
+		mnDesplazarAnimales.addActionListener(new ActionListener() {
+			/**
+			 * Pone visible la ventana para desplazar animales.
+			 */
+			public void actionPerformed(ActionEvent e) {
+				if (General.zoologico.size() == 0) {
+					JOptionPane.showMessageDialog(frmZoologicoCordoba,
+							"El Zoológico está vacío.");
+				} else {
+					DesplazarAnimal desplazarAnimal = new DesplazarAnimal();
+					desplazarAnimal.setVisible(true);
+				}
+			}
+		});
+		mnNewMenu.add(mnDesplazarAnimales);
+
+		JMenu mnMostrar = new JMenu("Mostrar");
+		mnMostrar.setMnemonic('M');
+		menuBar.add(mnMostrar);
 
 		mntmNumeroDeAnimales = new JMenuItem("Numero de Animales");
+		mntmNumeroDeAnimales.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_C, InputEvent.ALT_MASK));
+		mnMostrar.add(mntmNumeroDeAnimales);
+
+		JMenuItem mntmBuscarPorAlias = new JMenuItem("Mostrar Zoologico");
+		mntmBuscarPorAlias.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M,
+				InputEvent.SHIFT_MASK));
+		mnMostrar.add(mntmBuscarPorAlias);
+		mntmBuscarPorAlias.addActionListener(new ActionListener() {
+			/**
+			 * Pone visible la ventana para mostrar los animales del Zoo.
+			 */
+			public void actionPerformed(ActionEvent arg0) {
+				if (General.zoologico.size() == 0) {
+					JOptionPane.showMessageDialog(frmZoologicoCordoba,
+							"El Zoológico está vacío.");
+				} else {
+					MostrarZoologico mostrarZoologico = new MostrarZoologico();
+					mostrarZoologico.setVisible(true);
+				}
+			}
+		});
 		mntmNumeroDeAnimales.addActionListener(new ActionListener() {
+			/**
+			 * Pone visible la ventana para el n&uacute;mero de animales.
+			 */
 			public void actionPerformed(ActionEvent arg0) {
 				JOptionPane.showMessageDialog(mntmNumeroDeAnimales,
 						"Número total de animales en el Zoologico: "
 								+ General.zoologico.size());
 			}
 		});
-		mnEdicin.add(mntmNumeroDeAnimales);
-
-		JMenu mnNewMenu = new JMenu("Interacci\u00F3n");
-		mnNewMenu.setMnemonic('I');
-		menuBar.add(mnNewMenu);
-
-		JMenu mnBsqueda = new JMenu("B\u00FAsqueda");
-		menuBar.add(mnBsqueda);
-
-		JMenuItem mntmBuscarPorAlias = new JMenuItem("Buscar por Alias..");
-		mntmBuscarPorAlias.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				mostrarZoologico.setVisible(true);
-			}
-		});
-		mnBsqueda.add(mntmBuscarPorAlias);
 
 		JMenu mnAyuda = new JMenu("Ayuda");
 		mnAyuda.setMnemonic('Y');
 		menuBar.add(mnAyuda);
 
 		JMenuItem mntmAcercaDe = new JMenuItem("Acerca de");
+		mntmAcercaDe.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,
+				InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK));
+		mntmAcercaDe.addActionListener(new ActionListener() {
+			/**
+			 * Pone visible la ventana para Acerca del programa.
+			 */
+			public void actionPerformed(ActionEvent e) {
+				acercaDe.setVisible(true);
+			}
+		});
 		mnAyuda.add(mntmAcercaDe);
 
-		JMenu mnAyuda_1 = new JMenu("Ayuda");
-		mnAyuda.add(mnAyuda_1);
-
-		JMenuItem mntmMamferos = new JMenuItem("Mam\u00EDferos");
-		mntmMamferos.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M,
-				InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK));
-		mnAyuda_1.add(mntmMamferos);
-
-		JMenuItem mntmAves = new JMenuItem("Aves");
-		mntmAves.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,
-				InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK));
-		mnAyuda_1.add(mntmAves);
-
-		JMenuItem mntmPeces = new JMenuItem("Peces");
-		mntmPeces.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,
-				InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK));
-		mnAyuda_1.add(mntmPeces);
+		JMenuItem mnAyudaDe = new JMenuItem("Ayuda");
+		mnAyudaDe.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y,
+				InputEvent.CTRL_MASK));
+		mnAyudaDe.addActionListener(new ActionListener() {
+			/**
+			 * Pone visible la ventana para la ayuda del programa.
+			 */
+			public void actionPerformed(ActionEvent e) {
+				ayudaGeneral.setVisible(true);
+			}
+		});
+		mnAyuda.add(mnAyudaDe);
 		frmZoologicoCordoba.getContentPane().setLayout(null);
 
 		JLabel lblNewLabel_1 = new JLabel("Zool\u00F3gico de C\u00F3rdoba");
@@ -260,9 +349,8 @@ public class PrincipalGUI {
 		frmZoologicoCordoba.getContentPane().add(lblNewLabel_1);
 
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel
-				.setIcon(new ImageIcon(
-						"C:\\Users\\AntonioLuque\\Desktop\\_estudodomeiovisitaaozool.zoom.jpg"));
+		lblNewLabel.setIcon(new ImageIcon(PrincipalGUI.class
+				.getResource("/img/principal.jpg")));
 		lblNewLabel.setBounds(0, 0, 800, 408);
 		frmZoologicoCordoba.getContentPane().add(lblNewLabel);
 	}
@@ -275,6 +363,9 @@ public class PrincipalGUI {
 		this.selectedFile = selectedFile;
 	}
 
+	/**
+	 * M&eacute;todo para salir del Zoo.
+	 */
 	private void salir() {
 		if (General.zoologico.isModificado()) {
 			int opcion = JOptionPane.showConfirmDialog(nuevo,
@@ -301,12 +392,18 @@ public class PrincipalGUI {
 				System.exit(0);
 			} else if (opcion == 2) {
 				nuevo.setVisible(false);
-			} else
+			} else if (opcion == 1) {
 				System.exit(0);
+			} else {
+				nuevo.setVisible(false);
+			}
 		} else
 			System.exit(0);
 	}
 
+	/**
+	 * M&eacute;todo para crear un nuevo Zoo.
+	 */
 	private void nuevo() {
 		if (General.zoologico.isModificado()) {
 			int opcion = JOptionPane.showConfirmDialog(nuevo,
@@ -341,6 +438,9 @@ public class PrincipalGUI {
 			General.zoologico = new Zoologico();
 	}
 
+	/**
+	 * M&eacute;todo para abrir un Zoo ya almacenado previamente.
+	 */
 	private void abrir() {
 		JFileChooser abrir = new JFileChooser();
 		abrir.setFileFilter(filtro);
@@ -366,6 +466,9 @@ public class PrincipalGUI {
 		}
 	}
 
+	/**
+	 * M&eacute;todo para guardar un Zoo almacenado o no anteriormente.
+	 */
 	private void guardar() {
 		if (getSelectedFile() == null) {
 			JFileChooser guardar = new JFileChooser();
@@ -398,6 +501,9 @@ public class PrincipalGUI {
 		General.zoologico.setModificado(false);
 	}
 
+	/**
+	 * M&eacute;todo para guardar un Zoo.
+	 */
 	private void guardarComo() {
 		JFileChooser guardarComo = new JFileChooser();
 		guardarComo.setFileFilter(filtro);
