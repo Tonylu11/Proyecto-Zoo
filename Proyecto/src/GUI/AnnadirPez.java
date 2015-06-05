@@ -33,6 +33,8 @@ import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  * Ventana que a&ntilde;ade un Pez al Zool&oacute;gico
@@ -43,13 +45,34 @@ import java.awt.event.ActionEvent;
 public class AnnadirPez extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
+	/**
+	 * Campo de Alias.
+	 */
 	private JTextField aliasTxtField;
+	/**
+	 * Campo del peso.
+	 */
 	private JTextField pesoTxtField;
+	/**
+	 * Campo de la energ&iacute;a.
+	 */
 	private JTextField energiaTxtField;
+	/**
+	 * Combo Box de las especies de Peces.
+	 */
 	private JComboBox especieCBox;
 	private JButton okButton;
+	/**
+	 * Combo Box del tipo de alimentaci&oacute;n.
+	 */
 	private JComboBox alimentacionCBox;
+	/**
+	 * Fecha del almacenamiento del animal.
+	 */
 	private GregorianCalendar fecha;
+	/**
+	 * Check Box para las escamas.
+	 */
 	private JCheckBox chckbxEscamas;
 	private JTextField fechaTxtField;
 
@@ -57,6 +80,16 @@ public class AnnadirPez extends JDialog {
 	 * Crea la ventana.
 	 */
 	public AnnadirPez() {
+		addWindowListener(new WindowAdapter() {
+			/**
+			 * Acci&oacute;n que lleva a cabo mientras que se cierra la ventana.
+			 */
+			@Override
+			public void windowClosing(WindowEvent e) {
+				limpiar();
+				setVisible(false);
+			}
+		});
 		setTitle("A\u00F1adir Pez");
 		setModal(true);
 		setResizable(false);
@@ -82,6 +115,10 @@ public class AnnadirPez extends JDialog {
 					}
 				}
 
+				/**
+				 * Cuando gana el foco, el texto del alias se vuelve de color
+				 * negro.
+				 */
 				@Override
 				public void focusGained(FocusEvent e) {
 					aliasTxtField.setForeground(Color.BLACK);
@@ -229,6 +266,7 @@ public class AnnadirPez extends JDialog {
 				JButton cancelButton = new JButton("Cancel");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						limpiar();
 						setVisible(false);
 					}
 				});
@@ -256,7 +294,7 @@ public class AnnadirPez extends JDialog {
 					(Alimentacion) alimentacionCBox.getSelectedItem(),
 					aliasTxtField.getText(), Integer.parseInt(energiaTxtField
 							.getText()), Double.parseDouble(pesoTxtField
-							.getText()), General.zoologico.getFecha(), 3,
+							.getText()), General.zoologico.getFecha(),
 					(EspeciesPeces) especieCBox.getSelectedItem(),
 					chckbxEscamas.isSelected());
 			if (General.zoologico.annadir(pez)) {
@@ -266,9 +304,7 @@ public class AnnadirPez extends JDialog {
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(contentPanel, "Formato no válido",
 					"Error", JOptionPane.ERROR_MESSAGE);
-		} catch (HeadlessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
 		} catch (CodigoNoValidoException e) {
 			JOptionPane
 					.showMessageDialog(contentPanel, "El código es invalido",
@@ -284,6 +320,16 @@ public class AnnadirPez extends JDialog {
 			JOptionPane.showMessageDialog(contentPanel, "El Pez ya existe.",
 					"Error", JOptionPane.ERROR_MESSAGE);
 		}
+
+	}
+
+	/**
+	 * Limpia los campos de la ventana.
+	 */
+	private void limpiar() {
+		aliasTxtField.setText("");
+		pesoTxtField.setText("");
+		energiaTxtField.setText("");
 
 	}
 }

@@ -16,6 +16,9 @@ public class Mamifero extends Animal implements Energizable, Desplazable,
 	 * Especies de los mam&iacute;feros.
 	 */
 	private EspeciesMamiferos especiesMamiferos;
+	/**
+	 * Boolean para saber si el mam&iacute;fero est&aacute; hibernando o no.
+	 */
 	private boolean hibernando;
 	/**
 	 * Alias de mam&iacute;fero.
@@ -36,7 +39,6 @@ public class Mamifero extends Animal implements Energizable, Desplazable,
 	 *            peso del Mam&iacute;fero.
 	 * @param fecha
 	 *            fecha de almacenamiento del Mam&iacute;fero.
-	 * @param tipo
 	 * @param especiesMamiferos
 	 *            Especies de Mam&iacute;feros.
 	 * @param hibernando
@@ -49,11 +51,10 @@ public class Mamifero extends Animal implements Energizable, Desplazable,
 	 *             Cuando se intenta crear un animal sin energ&iacute;a.
 	 */
 	public Mamifero(Alimentacion tipoAlimentacion, String codigo, int energia,
-			double peso, Calendar fecha, int tipo,
-			EspeciesMamiferos especiesMamiferos, boolean hibernando)
-			throws CodigoNoValidoException, AnimalSinPesoException,
-			AnimalSinEnergiaException {
-		super(tipoAlimentacion, codigo, energia, peso, fecha, tipo);
+			double peso, Calendar fecha, EspeciesMamiferos especiesMamiferos,
+			boolean hibernando) throws CodigoNoValidoException,
+			AnimalSinPesoException, AnimalSinEnergiaException {
+		super(tipoAlimentacion, codigo, energia, peso, fecha);
 		setEspeciesMamiferos(especiesMamiferos);
 		setHibernando(hibernando);
 
@@ -72,11 +73,11 @@ public class Mamifero extends Animal implements Energizable, Desplazable,
 	}
 
 	protected static Mamifero instanciarMamifero(Alimentacion tipoAlimentacion,
-			String codigo, int energia, double peso, Calendar fecha, int tipo,
+			String codigo, int energia, double peso, Calendar fecha,
 			EspeciesMamiferos especiesMamiferos, boolean hibernando)
 			throws CodigoNoValidoException, AnimalSinPesoException,
 			AnimalSinEnergiaException {
-		return new Mamifero(tipoAlimentacion, codigo, energia, peso, fecha, 1,
+		return new Mamifero(tipoAlimentacion, codigo, energia, peso, fecha,
 				especiesMamiferos, hibernando);
 
 	}
@@ -94,6 +95,11 @@ public class Mamifero extends Animal implements Energizable, Desplazable,
 		this.especiesMamiferos = especiesMamiferos;
 	}
 
+	/**
+	 * Boolean que indica si esta hibernando o no.
+	 * 
+	 * @return Devuelve true si hiberna, false si no.
+	 */
 	public boolean isHibernando() {
 		return hibernando;
 	}
@@ -129,9 +135,14 @@ public class Mamifero extends Animal implements Energizable, Desplazable,
 
 	/**
 	 * M&eacute;todo comer de la interfaz Energizable.
+	 * 
+	 * @throws EnergiaInvalidaException
+	 *             Cuando la energ&iacute;a no es correcta.
+	 * @throws PesoInvalidoException
+	 *             Cuando el peso no es correcto.
 	 */
 	@Override
-	public void comer() {
+	public void comer() throws EnergiaInvalidaException, PesoInvalidoException {
 		switch (getEspeciesMamiferos()) {
 		case MARMOTA:
 			energia = energia + 3000;
@@ -155,24 +166,46 @@ public class Mamifero extends Animal implements Energizable, Desplazable,
 
 	/**
 	 * M&eacute;todo desplazarse de la interfaz Desplazable.
+	 * 
+	 * @throws EnergiaInvalidaException
+	 *             Cuando la energ&iacute;a no es correcta.
+	 * @throws PesoInvalidoException
+	 *             Cuando el peso no es correcto.
 	 */
 	@Override
-	public void desplazarse() {
+	public void desplazarse() throws EnergiaInvalidaException,
+			PesoInvalidoException {
 		switch (getEspeciesMamiferos()) {
 		case MARMOTA:
+			if (energia < 2800)
+				throw new EnergiaInvalidaException();
 			energia = energia - 2800;
+			if (peso < 2)
+				throw new PesoInvalidoException();
 			peso = peso - 2;
 			break;
 		case OSO:
+			if (energia < 4000)
+				throw new EnergiaInvalidaException();
 			energia = energia - 4000;
+			if (peso < 15)
+				throw new PesoInvalidoException();
 			peso = peso - 15;
 			break;
 		case SURICATO:
+			if (energia < 2500)
+				throw new EnergiaInvalidaException();
 			energia = energia - 2500;
+			if (peso < 2)
+				throw new PesoInvalidoException();
 			peso = peso - 2;
 			break;
 		case TIGRE:
+			if (energia < 3700)
+				throw new EnergiaInvalidaException();
 			energia = energia - 3700;
+			if (peso < 10)
+				throw new PesoInvalidoException();
 			peso = peso - 10;
 			break;
 		}

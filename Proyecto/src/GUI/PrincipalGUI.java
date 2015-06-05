@@ -41,7 +41,7 @@ import java.io.IOException;
  */
 public class PrincipalGUI {
 
-	private JFrame frmZoologicoCordoba;
+	private static JFrame frmZoologicoCordoba;
 	private AnnadirMamifero annadirMamifero = new AnnadirMamifero();
 	private AnnadirAve annadirAve = new AnnadirAve();
 	private AnnadirPez annadirPez = new AnnadirPez();
@@ -57,7 +57,10 @@ public class PrincipalGUI {
 	private JMenuItem mntmNumeroDeAnimales;
 
 	/**
-	 * Lanza la aplicaci&oacute;n.
+	 * Lanza la aplicaci&oacute;n
+	 * 
+	 * @param args
+	 *            args
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -66,7 +69,9 @@ public class PrincipalGUI {
 					PrincipalGUI window = new PrincipalGUI();
 					window.frmZoologicoCordoba.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(frmZoologicoCordoba,
+							"El programa no se ha podido iniciar.", "Error",
+							JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});

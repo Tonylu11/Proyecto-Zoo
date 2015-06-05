@@ -107,7 +107,7 @@ public class MostrarZoologico extends JDialog {
 		contentPanel.add(energiaLabel);
 
 		JLabel especieMamiferosLabel = new JLabel("Especies de Mam\u00EDferos");
-		especieMamiferosLabel.setBounds(10, 192, 155, 14);
+		especieMamiferosLabel.setBounds(10, 192, 135, 14);
 		contentPanel.add(especieMamiferosLabel);
 
 		JLabel alimentacionLabel = new JLabel("Tipo de alimentaci\u00F3n");
@@ -135,7 +135,7 @@ public class MostrarZoologico extends JDialog {
 		contentPanel.add(especiesPecesCBox);
 
 		JLabel especiesAvesLabel = new JLabel("Especies de Aves");
-		especiesAvesLabel.setBounds(137, 192, 155, 14);
+		especiesAvesLabel.setBounds(148, 192, 155, 14);
 		contentPanel.add(especiesAvesLabel);
 
 		JLabel especiesDePeces = new JLabel("Especies de Peces");

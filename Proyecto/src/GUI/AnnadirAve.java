@@ -33,6 +33,8 @@ import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  * Ventana que a&ntilde;ade un Ave al Zool&oacute;gico
@@ -43,12 +45,33 @@ import java.awt.event.ItemEvent;
 public class AnnadirAve extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
+	/**
+	 * Campo del alias.
+	 */
 	private JTextField aliasTxtField;
+	/**
+	 * Campo del peso.
+	 */
 	private JTextField pesoTxtField;
+	/**
+	 * Campo de la energ&iacute;a.
+	 */
 	private JTextField energiaTxtField;
+	/**
+	 * Combo Box del tipo de alimentaci&oacute;n.
+	 */
 	private JComboBox alimentacionCBox;
+	/**
+	 * Combo Box de las especies de Aves.
+	 */
 	private JComboBox especieCBox;
+	/**
+	 * Fecha del almacenamiento del animal.
+	 */
 	private Animal fecha;
+	/**
+	 * Check Box para la migraci&oacute;n.
+	 */
 	private JCheckBox chckbxMigrando;
 	private JButton okButton;
 	private JTextField fechaTxtField;
@@ -57,6 +80,13 @@ public class AnnadirAve extends JDialog {
 	 * Crea la ventana.
 	 */
 	public AnnadirAve() {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				limpiar();
+				setVisible(false);
+			}
+		});
 		setTitle("A\u00F1adir Ave");
 		setModal(true);
 		setResizable(false);
@@ -214,6 +244,7 @@ public class AnnadirAve extends JDialog {
 				JButton cancelButton = new JButton("Cancel");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						limpiar();
 						setVisible(false);
 					}
 				});
@@ -242,7 +273,7 @@ public class AnnadirAve extends JDialog {
 					aliasTxtField.getText(), Integer.parseInt(energiaTxtField
 							.getText()), Double.parseDouble(pesoTxtField
 							.getText()), General.zoologico.getFecha(),
-					(EspeciesAves) especieCBox.getSelectedItem(), 2,
+					(EspeciesAves) especieCBox.getSelectedItem(),
 					chckbxMigrando.isSelected());
 			if (General.zoologico.annadir(ave)) {
 				JOptionPane
@@ -251,8 +282,7 @@ public class AnnadirAve extends JDialog {
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(contentPanel, "Formato no válido",
 					"Error", JOptionPane.ERROR_MESSAGE);
-		} catch (HeadlessException e) {
-			e.printStackTrace();
+
 		} catch (CodigoNoValidoException e) {
 			JOptionPane
 					.showMessageDialog(contentPanel, "El código es invalido",
@@ -270,4 +300,10 @@ public class AnnadirAve extends JDialog {
 		}
 	}
 
+	private void limpiar() {
+		aliasTxtField.setText("");
+		pesoTxtField.setText("");
+		energiaTxtField.setText("");
+
+	}
 }

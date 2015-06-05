@@ -130,7 +130,7 @@ public class AlimentarAnimal extends JDialog {
 		contentPanel.add(especiesPecesCBox);
 
 		JLabel especiesAvesLabel = new JLabel("Especies de Aves");
-		especiesAvesLabel.setBounds(137, 192, 155, 14);
+		especiesAvesLabel.setBounds(148, 192, 155, 14);
 		contentPanel.add(especiesAvesLabel);
 
 		JLabel especiesDePeces = new JLabel("Especies de Peces");
@@ -171,30 +171,7 @@ public class AlimentarAnimal extends JDialog {
 			 * Acci&oacute;n realizada por el bot&oacute;n comer.
 			 */
 			public void actionPerformed(ActionEvent e) {
-				try {
-					if (Integer.parseInt(energiaTxtField.getText()) >= 15000)
-						throw new EnergiaInvalidaException();
-					if (Double.parseDouble(pesoTxtField.getText()) >= 1000)
-						throw new PesoInvalidoException();
-					General.zoologico.get(indice).comer();
-					mostrarAnimal(General.zoologico.get(indice));
-				} catch (AnimalSinPesoException e1) {
-					JOptionPane.showMessageDialog(contentPanel,
-							"El peso es inválido", "Error",
-							JOptionPane.ERROR_MESSAGE);
-				} catch (AnimalSinEnergiaException e1) {
-					JOptionPane.showMessageDialog(contentPanel,
-							"La energía es inválida", "Error",
-							JOptionPane.ERROR_MESSAGE);
-				} catch (EnergiaInvalidaException e1) {
-					JOptionPane.showMessageDialog(contentPanel,
-							"La energía no puede aumentar más..", "Error",
-							JOptionPane.ERROR_MESSAGE);
-				} catch (PesoInvalidoException e1) {
-					JOptionPane.showMessageDialog(contentPanel,
-							"El peso no puede aumentar más..", "Error",
-							JOptionPane.ERROR_MESSAGE);
-				}
+				alimentar();
 			}
 		});
 		btnComer.setBounds(264, 129, 91, 23);
@@ -339,6 +316,32 @@ public class AlimentarAnimal extends JDialog {
 			botonAnterior.setEnabled(false);
 		else
 			botonAnterior.setEnabled(true);
+	}
+
+	private void alimentar() {
+		try {
+			if (Integer.parseInt(energiaTxtField.getText()) >= 15000)
+				throw new EnergiaInvalidaException();
+			if (Double.parseDouble(pesoTxtField.getText()) >= 1000)
+				throw new PesoInvalidoException();
+			General.zoologico.get(indice).comer();
+			mostrarAnimal(General.zoologico.get(indice));
+		} catch (AnimalSinPesoException e1) {
+			JOptionPane.showMessageDialog(contentPanel, "El peso es inválido",
+					"Error", JOptionPane.ERROR_MESSAGE);
+		} catch (AnimalSinEnergiaException e1) {
+			JOptionPane.showMessageDialog(contentPanel,
+					"La energía es inválida", "Error",
+					JOptionPane.ERROR_MESSAGE);
+		} catch (EnergiaInvalidaException e1) {
+			JOptionPane.showMessageDialog(contentPanel,
+					"La energía no puede aumentar más..", "Error",
+					JOptionPane.ERROR_MESSAGE);
+		} catch (PesoInvalidoException e1) {
+			JOptionPane.showMessageDialog(contentPanel,
+					"El peso no puede aumentar más..", "Error",
+					JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 }

@@ -133,7 +133,7 @@ public class EliminarAnimal extends JDialog {
 		contentPanel.add(especiesPecesCBox);
 
 		JLabel especiesAvesLabel = new JLabel("Especies de Aves");
-		especiesAvesLabel.setBounds(137, 192, 155, 14);
+		especiesAvesLabel.setBounds(147, 192, 155, 14);
 		contentPanel.add(especiesAvesLabel);
 
 		JLabel especiesDePeces = new JLabel("Especies de Peces");
@@ -210,22 +210,9 @@ public class EliminarAnimal extends JDialog {
 					 * Acci&oacute;n del bot&oacute;n Eliminar.
 					 */
 					public void actionPerformed(ActionEvent e) {
-						try {
-							General.zoologico.eliminar(General.zoologico
-									.get(aliasTxtField.getText()),
-									aliasTxtField.getText());
-							JOptionPane.showMessageDialog(contentPanel,
-									"Animal eliminado con éxito.");
-						} catch (AnimalNoExisteException e1) {
-							JOptionPane.showMessageDialog(contentPanel,
-									"El Animal no existe.", "Error",
-									JOptionPane.ERROR_MESSAGE);
-						} catch (CodigoNoValidoException e2) {
-							JOptionPane.showMessageDialog(contentPanel,
-									"El código no es válido.", "Error",
-									JOptionPane.ERROR_MESSAGE);
-						}
+						eliminar();
 					}
+
 				});
 				buttonPane.add(btnEliminar);
 				buttonPane.add(btnMostrar);
@@ -306,4 +293,20 @@ public class EliminarAnimal extends JDialog {
 		escamasRButton.setSelected(escamas);
 	}
 
+	private void eliminar() {
+		try {
+			General.zoologico.eliminar(
+					General.zoologico.get(aliasTxtField.getText()),
+					aliasTxtField.getText());
+			JOptionPane.showMessageDialog(contentPanel,
+					"Animal eliminado con éxito.");
+		} catch (AnimalNoExisteException e1) {
+			JOptionPane.showMessageDialog(contentPanel, "El Animal no existe.",
+					"Error", JOptionPane.ERROR_MESSAGE);
+		} catch (CodigoNoValidoException e2) {
+			JOptionPane.showMessageDialog(contentPanel,
+					"El código no es válido.", "Error",
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
 }

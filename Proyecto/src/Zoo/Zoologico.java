@@ -13,10 +13,13 @@ import java.util.GregorianCalendar;
  */
 public class Zoologico implements Serializable {
 	private ArrayList<Animal> zoologico = new ArrayList<Animal>();
-	public static ArrayList<Animal> almacenMamiferos = new ArrayList<Animal>();
-	public ArrayList<Animal> almacenAves = new ArrayList<Animal>();
-	public ArrayList<Animal> almacenPeces = new ArrayList<Animal>();
+	/**
+	 * Campo que indica si el archivo est&aacute; modificado o no.
+	 */
 	public boolean modificado;
+	/**
+	 * Fecha de almacenamiento del animal en el Zoo.
+	 */
 	private Calendar fecha = new GregorianCalendar();
 	Animal animal;
 
@@ -30,18 +33,9 @@ public class Zoologico implements Serializable {
 	 *             Cuando el animal ya existe en el Zoo.
 	 */
 	public boolean annadir(Animal animal) throws AnimalYaExisteException {
-		if (yaExiste(animal) == true) {
-			if (animal.tipo == 1) {
-				setModificado(true);
-				return almacenMamiferos.add((Mamifero) animal)
-						&& zoologico.add(animal);
-			} else if (animal.tipo == 2) {
-				setModificado(true);
-				return almacenAves.add((Ave) animal) && zoologico.add(animal);
-			} else if (animal.tipo == 3) {
-				setModificado(true);
-				return almacenPeces.add((Pez) animal) && zoologico.add(animal);
-			}
+		if (!yaExiste(animal)) {
+			setModificado(true);
+			return zoologico.add(animal);
 		}
 		return false;
 	}
@@ -63,23 +57,25 @@ public class Zoologico implements Serializable {
 	 */
 	public boolean eliminar(Animal animal, String codigo)
 			throws CodigoNoValidoException, AnimalNoExisteException {
-		if (animal.tipo == 1) {
+		if (Mamifero.class == animal.getClass()) {
 			setModificado(true);
-			return almacenMamiferos.remove(new Mamifero(codigo))
-					&& zoologico.remove(new Mamifero(codigo));
-		} else if (animal.tipo == 2) {
+			return zoologico.remove(new Mamifero(codigo));
+		} else if (Ave.class == animal.getClass()) {
 			setModificado(true);
-			return almacenAves.remove(new Ave(codigo))
-					&& zoologico.remove(new Ave(codigo));
-		} else if (animal.tipo == 3) {
+			return zoologico.remove(new Ave(codigo));
+		} else if (Pez.class == animal.getClass()) {
 			setModificado(true);
-			return almacenPeces.remove(new Pez(codigo))
-					&& zoologico.remove(new Pez(codigo));
+			return zoologico.remove(new Pez(codigo));
 		}
 		throw new AnimalNoExisteException("El animal no existe.");
 
 	}
 
+	/**
+	 * Boolean para ver si esta modificado el archivo.
+	 * 
+	 * @return true si est&aacute; modificado, false si no.
+	 */
 	public boolean isModificado() {
 		return modificado;
 	}
@@ -98,12 +94,10 @@ public class Zoologico implements Serializable {
 	 *             Si ya existe el animal en el Zoo.
 	 */
 	public boolean yaExiste(Animal animal) throws AnimalYaExisteException {
-		if (zoologico.contains(animal) || almacenMamiferos.contains(animal)
-				|| almacenAves.contains(animal)
-				|| almacenPeces.contains(animal))
-			throw new AnimalYaExisteException("");
-		else
+		if (zoologico.contains(animal))
 			return true;
+		else
+			return false;
 	}
 
 	/**
@@ -129,10 +123,26 @@ public class Zoologico implements Serializable {
 
 	}
 
+	/**
+	 * Obtiene la fecha de almacenamiento del animal.
+	 * 
+	 * @return Fecha de almacenamiento del animal.
+	 */
 	public Calendar getFecha() {
 		return fecha;
 	}
 
+	/**
+	 * Devuelve el animal que est&aacute; en esa posici&oacute;n.
+	 * 
+	 * @param alias
+	 *            Alias del animal.
+	 * @return Devuelve el animal de esa posici&oacute;n.
+	 * @throws CodigoNoValidoException
+	 *             Cuando el c&oacute;digo no es correcto.
+	 * @throws AnimalNoExisteException
+	 *             Cuando el animal no existe.
+	 */
 	public Animal get(String alias) throws CodigoNoValidoException,
 			AnimalNoExisteException {
 		Animal animal = new Animal(alias);

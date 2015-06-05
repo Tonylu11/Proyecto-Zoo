@@ -130,7 +130,7 @@ public class DesplazarAnimal extends JDialog {
 		contentPanel.add(especiesPecesCBox);
 
 		JLabel especiesAvesLabel = new JLabel("Especies de Aves");
-		especiesAvesLabel.setBounds(137, 192, 155, 14);
+		especiesAvesLabel.setBounds(150, 192, 155, 14);
 		contentPanel.add(especiesAvesLabel);
 
 		JLabel especiesDePeces = new JLabel("Especies de Peces");
@@ -172,31 +172,9 @@ public class DesplazarAnimal extends JDialog {
 			 * energ&iacute; y su peso
 			 */
 			public void actionPerformed(ActionEvent arg0) {
-				try {
-					if (Integer.parseInt(energiaTxtField.getText()) <= 300)
-						throw new EnergiaInvalidaException();
-					if (Double.parseDouble(pesoTxtField.getText()) == 0.0)
-						throw new PesoInvalidoException();
-					General.zoologico.get(indice).desplazarse();
-					mostrarAnimal(General.zoologico.get(indice));
-				} catch (AnimalSinEnergiaException e1) {
-					JOptionPane.showMessageDialog(contentPanel,
-							"El animal no tiene energía suficiente.", "Error",
-							JOptionPane.ERROR_MESSAGE);
-				} catch (AnimalSinPesoException e1) {
-					JOptionPane.showMessageDialog(contentPanel,
-							"El animal no tiene peso suficiente.", "Error",
-							JOptionPane.ERROR_MESSAGE);
-				} catch (EnergiaInvalidaException e1) {
-					JOptionPane.showMessageDialog(contentPanel,
-							"La energía no puede disminuir más..", "Error",
-							JOptionPane.ERROR_MESSAGE);
-				} catch (PesoInvalidoException e1) {
-					JOptionPane.showMessageDialog(contentPanel,
-							"El peso no puede disminuir más..", "Error",
-							JOptionPane.ERROR_MESSAGE);
-				}
+				desplazar();
 			}
+
 		});
 		button.setBounds(264, 131, 91, 23);
 		contentPanel.add(button);
@@ -340,5 +318,32 @@ public class DesplazarAnimal extends JDialog {
 			botonAnterior.setEnabled(false);
 		else
 			botonAnterior.setEnabled(true);
+	}
+
+	private void desplazar() {
+		try {
+			if (Integer.parseInt(energiaTxtField.getText()) <= 300)
+				throw new EnergiaInvalidaException();
+			if (Double.parseDouble(pesoTxtField.getText()) == 0.0)
+				throw new PesoInvalidoException();
+			General.zoologico.get(indice).desplazarse();
+			mostrarAnimal(General.zoologico.get(indice));
+		} catch (AnimalSinEnergiaException e1) {
+			JOptionPane.showMessageDialog(contentPanel,
+					"El animal no tiene energía suficiente.", "Error",
+					JOptionPane.ERROR_MESSAGE);
+		} catch (AnimalSinPesoException e1) {
+			JOptionPane.showMessageDialog(contentPanel,
+					"El animal no tiene peso suficiente.", "Error",
+					JOptionPane.ERROR_MESSAGE);
+		} catch (EnergiaInvalidaException e1) {
+			JOptionPane.showMessageDialog(contentPanel,
+					"La energía no puede disminuir más..", "Error",
+					JOptionPane.ERROR_MESSAGE);
+		} catch (PesoInvalidoException e1) {
+			JOptionPane.showMessageDialog(contentPanel,
+					"El peso no puede disminuir más..", "Error",
+					JOptionPane.ERROR_MESSAGE);
+		}
 	}
 }

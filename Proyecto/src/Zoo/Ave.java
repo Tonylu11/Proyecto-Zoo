@@ -16,6 +16,9 @@ public class Ave extends Animal implements Desplazable, Energizable,
 	 * Especies de Aves.
 	 */
 	private EspeciesAves especiesAves;
+	/**
+	 * true si migra el animal, false si no.
+	 */
 	private boolean migrando;
 	/**
 	 * Alias del ave.
@@ -37,8 +40,6 @@ public class Ave extends Animal implements Desplazable, Energizable,
 	 *            Fecha del almacenamiento del Ave.
 	 * @param especiesAves
 	 *            Especies de Aves.
-	 * @param tipo
-	 *            Tipo de Animal.
 	 * @param migrando
 	 *            Boolean migrando.
 	 * @throws CodigoNoValidoException
@@ -49,10 +50,10 @@ public class Ave extends Animal implements Desplazable, Energizable,
 	 *             Cuando se intenta crear un animal sin energ&iacute;a.
 	 */
 	public Ave(Alimentacion tipoAlimentacion, String codigo, int energia,
-			double peso, Calendar fecha, EspeciesAves especiesAves, int tipo,
+			double peso, Calendar fecha, EspeciesAves especiesAves,
 			boolean migrando) throws CodigoNoValidoException,
 			AnimalSinPesoException, AnimalSinEnergiaException {
-		super(tipoAlimentacion, codigo, energia, peso, fecha, tipo);
+		super(tipoAlimentacion, codigo, energia, peso, fecha);
 		setEspeciesAves(especiesAves);
 		setMigrando(migrando);
 
@@ -70,29 +71,13 @@ public class Ave extends Animal implements Desplazable, Energizable,
 		setCodigo(codigo);
 	}
 
-	/**
-	 * Instacia un ave.
-	 * 
-	 * @param tipoAlimentacion
-	 * @param codigo
-	 * @param energia
-	 * @param peso
-	 * @param fecha
-	 * @param tipo
-	 * @param especiesAves
-	 * @param migrando
-	 * @return Devuelve la creaci&oacute;n de un Ave.
-	 * @throws CodigoNoValidoException
-	 * @throws AnimalSinPesoException
-	 * @throws AnimalSinEnergiaException
-	 */
 	public static Ave instanciarAve(Alimentacion tipoAlimentacion,
 			String codigo, int energia, double peso, Calendar fecha, int tipo,
 			EspeciesAves especiesAves, boolean migrando)
 			throws CodigoNoValidoException, AnimalSinPesoException,
 			AnimalSinEnergiaException {
 		return new Ave(tipoAlimentacion, codigo, energia, peso, fecha,
-				especiesAves, 2, migrando);
+				especiesAves, migrando);
 	}
 
 	/**
@@ -144,25 +129,48 @@ public class Ave extends Animal implements Desplazable, Energizable,
 
 	/**
 	 * M&eacute;todo desplazarse de la interfaz Desplazable.
+	 * 
+	 * @throws EnergiaInvalidaException
+	 *             Cuando la energ&iacute;a no es correcta.
+	 * @throws PesoInvalidoException
+	 *             Cuando el peso no es correcto.
 	 */
 	@Override
 	public void desplazarse() throws AnimalSinEnergiaException,
-			AnimalSinPesoException {
+			AnimalSinPesoException, EnergiaInvalidaException,
+			PesoInvalidoException {
 		switch (getEspeciesAves()) {
 		case AVESTRUZ:
+			if (energia < 1400)
+				throw new EnergiaInvalidaException();
 			energia = energia - 1400;
+			if (peso < 2)
+				throw new PesoInvalidoException();
 			peso = peso - 2;
 			break;
 		case AGUILA:
+			if (energia < 2300)
+				throw new EnergiaInvalidaException();
 			energia = energia - 2300;
+			if (peso < 3)
+				throw new PesoInvalidoException();
 			peso = peso - 3;
 		case GOLONDRINA:
+			if (energia < 2000)
+				throw new EnergiaInvalidaException();
 			energia = energia - 2000;
+			if (peso < 4)
+				throw new PesoInvalidoException();
 			peso = peso - 4;
 			break;
 		}
 	}
 
+	/**
+	 * Especies de Aves.
+	 * 
+	 * @return Especies de Aves.
+	 */
 	public EspeciesAves getEspeciesAves() {
 		return especiesAves;
 	}
@@ -171,6 +179,11 @@ public class Ave extends Animal implements Desplazable, Energizable,
 		this.especiesAves = especiesAves;
 	}
 
+	/**
+	 * Boolean para saber si migra o no.
+	 * 
+	 * @return true si migra, false si no.
+	 */
 	public boolean isMigrando() {
 		return migrando;
 	}

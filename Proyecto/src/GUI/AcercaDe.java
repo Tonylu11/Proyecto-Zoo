@@ -15,6 +15,7 @@ import java.awt.event.ActionEvent;
 
 /**
  * Ventana que muestra el Acerca de del programa
+ * 
  * @author Antonio Luque Bravo
  */
 @SuppressWarnings("serial")
@@ -24,19 +25,6 @@ public class AcercaDe extends JDialog {
 	 * ventana.
 	 */
 	private final JPanel contentPanel = new JPanel();
-
-	/**
-	 * Lanza la aplicaci&oacute;n
-	 */
-	public static void main(String[] args) {
-		try {
-			AcercaDe dialog = new AcercaDe();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	/**
 	 * Inicializa los contenidos de la ventana principal.

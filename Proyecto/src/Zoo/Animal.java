@@ -12,21 +12,26 @@ import java.util.regex.Pattern;
  */
 @SuppressWarnings("serial")
 public class Animal implements Serializable, Energizable, Desplazable {
+	/**
+	 * Tipo de alimentaci&oacute;n del animal.
+	 */
 	protected Alimentacion tipoAlimentacion;
 	/**
 	 * Alias del animal.
 	 */
 	protected String codigo;
+	/**
+	 * Energ&iacute;a del animal.
+	 */
 	protected int energia;
+	/**
+	 * Peso del animal.
+	 */
 	protected double peso;
 	/**
 	 * Fecha de cuando se almacena al animal.
 	 */
 	protected Calendar fecha;
-	/**
-	 * Siendo 1 para mam&iacute;feros, 2 para aves y 3 para peces.
-	 */
-	protected int tipo;
 	protected int aumentaEnergia;
 	protected double aumentaPeso;
 	protected int disminuyeEnergia;
@@ -60,8 +65,6 @@ public class Animal implements Serializable, Energizable, Desplazable {
 	 *            Peso del animal.
 	 * @param fecha
 	 *            Fecha de cuando se almacena el animal en el Zoo.
-	 * @param tipo
-	 *            tipo de animal.
 	 * @throws CodigoNoValidoException
 	 *             Cuando el C&oacute;digo no es v&aacute;lido.
 	 * @throws AnimalSinPesoException
@@ -70,15 +73,14 @@ public class Animal implements Serializable, Energizable, Desplazable {
 	 *             Cuando se intenta crear un animal sin energ&iacute;a.
 	 */
 	public Animal(Alimentacion tipoAlimentacion, String codigo, int energia,
-			double peso, Calendar fecha, int tipo)
-			throws CodigoNoValidoException, AnimalSinPesoException,
-			AnimalSinEnergiaException {
+			double peso, Calendar fecha) throws CodigoNoValidoException,
+			AnimalSinPesoException, AnimalSinEnergiaException {
 		setTipoAlimentacion(tipoAlimentacion);
 		setCodigo(codigo);
 		this.energia = energia;
 		this.peso = peso;
 		setFecha(fecha);
-		setTipo(tipo);
+
 	}
 
 	public Animal() {
@@ -143,6 +145,11 @@ public class Animal implements Serializable, Energizable, Desplazable {
 		return aliasAnimal.matcher(codigo).matches();
 	}
 
+	/**
+	 * Devuelve la energ&iacute;a del animal.
+	 * 
+	 * @return Energ&iacute; del animal.
+	 */
 	public int getEnergia() {
 		return energia;
 	}
@@ -174,6 +181,11 @@ public class Animal implements Serializable, Energizable, Desplazable {
 		}
 	}
 
+	/**
+	 * Devuelve el peso del animal.
+	 * 
+	 * @return Peso del animal.
+	 */
 	public double getPeso() {
 		return peso;
 	}
@@ -216,14 +228,6 @@ public class Animal implements Serializable, Energizable, Desplazable {
 		this.fecha = fecha;
 	}
 
-	public int getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(int tipo) {
-		this.tipo = tipo;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -257,8 +261,16 @@ public class Animal implements Serializable, Energizable, Desplazable {
 	public void comer() throws AnimalSinPesoException,
 			AnimalSinEnergiaException, EnergiaInvalidaException,
 			PesoInvalidoException {
-		energia = energia + aumentaEnergia;
-		peso = peso + aumentaPeso;
+		if (energia >= 30000) {
+			throw new EnergiaInvalidaException();
+		} else {
+			energia = energia + aumentaEnergia;
+		}
+		if (peso >= 1000) {
+			throw new PesoInvalidoException();
+		} else {
+			peso = peso + aumentaPeso;
+		}
 
 	}
 
@@ -269,7 +281,15 @@ public class Animal implements Serializable, Energizable, Desplazable {
 	public void desplazarse() throws AnimalSinEnergiaException,
 			AnimalSinPesoException, EnergiaInvalidaException,
 			PesoInvalidoException {
-		energia = energia - disminuyeEnergia;
-		peso = peso - disminuyePeso;
+		if (energia <= 500) {
+			throw new EnergiaInvalidaException();
+		} else {
+			energia = energia - disminuyeEnergia;
+		}
+		if (peso <= 1) {
+			throw new PesoInvalidoException();
+		} else {
+			peso = peso - disminuyePeso;
+		}
 	}
 }

@@ -38,6 +38,8 @@ import javax.swing.JCheckBox;
 
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  * Ventana que a&ntilde;ade un Mam&iacute;fero al Zool&oacute;gico
@@ -49,14 +51,34 @@ import java.awt.event.FocusEvent;
 public class AnnadirMamifero extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
+	/**
+	 * Campo del alias.
+	 */
 	private JTextField aliasTxtField;
-	private final ButtonGroup buttonGroup = new ButtonGroup();
+	/**
+	 * Campo del peso.
+	 */
 	private JTextField pesoTxtField;
+	/**
+	 * Campo de la energ&iacute;a.
+	 */
 	private JTextField energiaTxtField;
 	private JButton okButton;
+	/**
+	 * Combo Box de las especies de Mam&iacute;feros.
+	 */
 	private JComboBox especieCBox;
+	/**
+	 * Combo Box del tipo de alimentaci&oacute;n.
+	 */
 	private JComboBox alimentacionCBox;
+	/**
+	 * Fecha del almacenamiento del animal.
+	 */
 	private GregorianCalendar fecha;
+	/**
+	 * Check Box para la hibernaci&oacute;n.
+	 */
 	private JCheckBox chckbxHibernando;
 	private JTextField fechaTxtField;
 
@@ -64,6 +86,13 @@ public class AnnadirMamifero extends JDialog {
 	 * Crea la ventana.
 	 */
 	public AnnadirMamifero() {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				limpiar();
+				setVisible(false);
+			}
+		});
 		setTitle("A\u00F1adir Mamifero");
 		setModal(true);
 		setResizable(false);
@@ -217,8 +246,10 @@ public class AnnadirMamifero extends JDialog {
 				buttonPane.add(cancelButton);
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
+						limpiar();
 						setVisible(false);
 					}
+
 				});
 			}
 		}
@@ -242,7 +273,7 @@ public class AnnadirMamifero extends JDialog {
 					(Alimentacion) alimentacionCBox.getSelectedItem(),
 					aliasTxtField.getText(), Integer.parseInt(energiaTxtField
 							.getText()), Double.parseDouble(pesoTxtField
-							.getText()), General.zoologico.getFecha(), 1,
+							.getText()), General.zoologico.getFecha(),
 					(EspeciesMamiferos) especieCBox.getSelectedItem(),
 					getHibernando());
 			if (General.zoologico.annadir(mamifero)) {
@@ -277,6 +308,13 @@ public class AnnadirMamifero extends JDialog {
 			return true;
 		} else
 			return false;
+	}
+
+	private void limpiar() {
+		aliasTxtField.setText("");
+		pesoTxtField.setText("");
+		energiaTxtField.setText("");
+
 	}
 
 }
