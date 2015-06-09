@@ -26,6 +26,7 @@ import javax.swing.JCheckBox;
 import Zoo.Alimentacion;
 import Zoo.Animal;
 import Zoo.AnimalNoExisteException;
+import Zoo.AnimalYaExisteException;
 import Zoo.Ave;
 import Zoo.CodigoNoValidoException;
 import Zoo.EspeciesAves;
@@ -307,6 +308,9 @@ public class EliminarAnimal extends JDialog {
 			JOptionPane.showMessageDialog(contentPanel,
 					"El código no es válido.", "Error",
 					JOptionPane.ERROR_MESSAGE);
+		} catch (AnimalYaExisteException e) {
+			JOptionPane.showMessageDialog(contentPanel, "El animal ya existe.",
+					"Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 }

@@ -53,19 +53,15 @@ public class Zoologico implements Serializable {
 	 * @throws AnimalNoExisteException
 	 *             Cuando el animal que intentamos eliminar no existe en nuestro
 	 *             Zoo.
+	 * @throws AnimalYaExisteException
 	 * 
 	 */
 	public boolean eliminar(Animal animal, String codigo)
-			throws CodigoNoValidoException, AnimalNoExisteException {
-		if (Mamifero.class == animal.getClass()) {
+			throws CodigoNoValidoException, AnimalNoExisteException,
+			AnimalYaExisteException {
+		if (yaExiste(animal)) {
 			setModificado(true);
-			return zoologico.remove(new Mamifero(codigo));
-		} else if (Ave.class == animal.getClass()) {
-			setModificado(true);
-			return zoologico.remove(new Ave(codigo));
-		} else if (Pez.class == animal.getClass()) {
-			setModificado(true);
-			return zoologico.remove(new Pez(codigo));
+			return zoologico.remove(new Animal(codigo));
 		}
 		throw new AnimalNoExisteException("El animal no existe.");
 
